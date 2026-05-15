@@ -1,12 +1,9 @@
-from django.urls import path
-from . import views
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('gallery/', views.gallery, name='gallery'),
-    path('media/<int:pk>/', views.media_detail, name='media_detail'),
-    path('upload/', views.upload, name='upload'),
-    path('register/', views.register, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-]
+    path('admin/', admin.site.urls),
+    path('', include('core.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
