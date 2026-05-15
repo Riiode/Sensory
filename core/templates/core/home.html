@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Media — Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Multimedia Hub</h1>
+    <p>Images · Videos · Audio — all in one place</p>
+    <a href="{% url 'gallery' %}" class="btn">Explore Gallery</a>
+</section>
+
+<section class="featured">
+    <h2>Featured Media</h2>
+    <div class="grid">
+        {% for item in featured %}
+        <a href="{% url 'media_detail' item.pk %}" class="card">
+            {% if item.thumbnail %}
+                <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+            {% else %}
+                <div class="placeholder">{{ item.get_media_type_display }}</div>
+            {% endif %}
+            <div class="card-body">
+                <span class="badge">{{ item.get_media_type_display }}</span>
+                <h3>{{ item.title }}</h3>
+            </div>
+        </a>
+        {% empty %}
+        <p>No media yet. <a href="/admin/">Add some via Admin</a></p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

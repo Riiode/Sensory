@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Gallery{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Media Gallery</h1>
+    <div class="filters">
+        <a href="{% url 'gallery' %}" class="filter-btn {% if not selected_type %}active{% endif %}">All</a>
+        <a href="?type=image" class="filter-btn {% if selected_type == 'image' %}active{% endif %}">Images</a>
+        <a href="?type=video" class="filter-btn {% if selected_type == 'video' %}active{% endif %}">Videos</a>
+        <a href="?type=audio" class="filter-btn {% if selected_type == 'audio' %}active{% endif %}">Audio</a>
+    </div>
+</div>
+
+<div class="grid">
+    {% for item in items %}
+    <a href="{% url 'media_detail' item.pk %}" class="card">
+        {% if item.thumbnail %}
+            <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+        {% else %}
+            <div class="placeholder type-{{ item.media_type }}">
+                {% if item.media_type == 'image' %}🖼{% elif item.media_type == 'video' %}🎬{% else %}🎵{% endif %}
+            </div>
+        {% endif %}
+        <div class="card-body">
+            <span class="badge">{{ item.get_media_type_display }}</span>
+            <h3>{{ item.title }}</h3>
+            {% if item.category %}<small>{{ item.category }}</small>{% endif %}
+        </div>
+    </a>
+    {% empty %}
+    <p>No items found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

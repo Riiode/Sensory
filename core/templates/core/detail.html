@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+<div class="detail-page">
+    <div class="media-player">
+        {% if item.media_type == 'image' %}
+            <img src="{{ item.file.url }}" alt="{{ item.title }}" class="full-img">
+
+        {% elif item.media_type == 'video' %}
+            <video controls class="full-video">
+                <source src="{{ item.file.url }}">
+                Your browser does not support video.
+            </video>
+
+        {% elif item.media_type == 'audio' %}
+            <div class="audio-wrapper">
+                {% if item.thumbnail %}
+                    <img src="{{ item.thumbnail.url }}" alt="cover" class="audio-cover">
+                {% endif %}
+                <audio controls>
+                    <source src="{{ item.file.url }}">
+                    Your browser does not support audio.
+                </audio>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="media-info">
+        <span class="badge">{{ item.get_media_type_display }}</span>
+        <h1>{{ item.title }}</h1>
+        {% if item.category %}<p class="category">{{ item.category }}</p>{% endif %}
+        <p>{{ item.description }}</p>
+        <small>Uploaded: {{ item.uploaded_at|date:"F j, Y" }}</small>
+    </div>
+</div>
+
+{% if related %}
+<section class="related">
+    <h2>Related Media</h2>
+    <div class="grid">
+        {% for r in related %}
+        <a href="{% url 'media_detail' r.pk %}" class="card">
+            <div class="card-body"><h3>{{ r.title }}</h3></div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}
