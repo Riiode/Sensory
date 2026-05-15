@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User  # ← must be at the top, outside everything
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -19,6 +20,7 @@ class MediaItem(models.Model):
     thumbnail   = models.ImageField(upload_to='thumbnails/', blank=True, null=True)
     category    = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.title

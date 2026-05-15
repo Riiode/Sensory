@@ -141,3 +141,5 @@ if os.getenv('DATABASE_URL'):
 if not DEBUG:
     ALLOWED_HOSTS = [os.getenv('RENDER_EXTERNAL_HOSTNAME', '*')]
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
