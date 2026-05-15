@@ -131,3 +131,13 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+import dj_database_url
+
+# Override database on Render (uses DATABASE_URL env var)
+if os.getenv('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
+# Security for production
+if not DEBUG:
+    ALLOWED_HOSTS = [os.getenv('RENDER_EXTERNAL_HOSTNAME', '*')]
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
